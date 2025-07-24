@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorador de Recursos Educativos Digitales</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* --- Paleta de Colores y Variables CSS --- */
+        :root {
+            --primary-color: #4a47a3;      /* Azul-Morado profundo */
+            --secondary-color: #70a1ff;   /* Azul claro vibrante */
+            --accent-color: #ff6b6b;      /* Coral suave */
+            --background-color: #f8f9fa;  /* Gris muy claro */
+            --card-bg-color: #FFFFFF;
+            --text-color: #495057;
+            --heading-color: #1a1a2e;
+            --border-radius: 20px;
+            --shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            --transition-speed: 0.4s;
+        }
+
+        /* --- Estilos Generales --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.7;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* --- Hero Section --- */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: #fff;
+            padding: 100px 20px 80px 20px;
+            text-align: center;
+            border-bottom-left-radius: 50% 20%;
+            border-bottom-right-radius: 50% 20%;
+        }
+
+        .hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3.8rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        /* --- Sección Principal --- */
+        main {
+            padding-top: 40px;
+        }
+
+        /* --- Estructura de Tarjetas (Acordeón) --- */
+        .platform-card {
+            background-color: var(--card-bg-color);
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: all var(--transition-speed) ease;
+            border: 1px solid #eef;
+        }
+        
+        .platform-card:hover {
+             transform: translateY(-5px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            padding: 30px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .platform-icon {
+            font-size: 2.5rem;
+            margin-right: 25px;
+            color: var(--primary-color);
+        }
+        
+        .platform-info h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            color: var(--heading-color);
+            margin: 0;
+        }
+
+        .platform-info p {
+            margin: 5px 0 0 0;
+            font-size: 1rem;
+            color: #6c757d;
+        }
+        
+        .toggle-icon {
+            margin-left: auto;
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--secondary-color);
+            transition: transform var(--transition-speed) cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* --- Contenido expandible --- */
+        .card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            padding: 0 30px;
+        }
+        
+        .platform-card.active .card-content {
+            max-height: 5000px; /* Suficientemente grande */
+            padding: 10px 30px 40px 30px;
+        }
+        
+        .platform-card.active .toggle-icon {
+            transform: rotate(135deg);
+        }
+        
+        .content-section {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #f0f0f5;
+        }
+        
+        .content-section h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .detail-item {
+            background: var(--background-color);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .detail-item strong {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--heading-color);
+            font-weight: 700;
+        }
+
+        .resource-list ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .resource-list li {
+            background: var(--background-color);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 5px solid var(--accent-color);
+        }
+        
+        .resource-title {
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--heading-color);
+            display: block;
+            margin-bottom: 15px;
+        }
+        
+        a.resource-link {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all var(--transition-speed);
+        }
+        
+        a.resource-link:hover {
+            background-color: #00897B;
+            transform: scale(1.05);
+        }
+        
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 50px;
+            color: #adb5bd;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.8rem; }
+            .platform-info h2 { font-size: 1.5rem; }
+            .card-header { padding: 20px; flex-wrap: wrap; }
+            .platform-icon { margin-bottom: 10px; width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <h1>MATIC | Asignatura: Diseño y Aplicación de Recursos Interactivos Para el aprendizaje</h1>
+        <h2>Explorador de Plataformas de Recursos Educativos Interactivos</h2>
+        <p>Descubre y navega por un catálogo curado de las mejores plataformas y herramientas para potenciar la enseñanza y el aprendizaje en la era digital.</p>
+    </header>
+
+    <div class="container">
+        <main id="platforms-container">
+            <!-- Las tarjetas de plataformas se generarán aquí con JavaScript -->
+        </main>
+        
+        <footer>
+            <p>Creado por: Profesor Ing. Augusto De Oleo, MBA, Msc © 2025</p>
+            <p>Catálogo Interactivo de Recursos Educativos Abiertos (REA) © 2024</p>
+        </footer>
+    </div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const platformData = [
+            {
+                id: "merlot",
+                icon: "📚",
+                name: "MERLOT",
+                description: "Una vasta biblioteca digital y comunidad internacional. MERLOT es un repositorio colaborativo donde educadores de nivel superior pueden encontrar, evaluar y compartir materiales educativos multimedia de alta calidad, revisados por pares para garantizar su pertinencia pedagógica.",
+                purpose: "Fomentar el intercambio y la evaluación de recursos educativos abiertos (REA) para enriquecer la enseñanza universitaria.",
+                uses: "Ideal para la planificación de cursos universitarios, el desarrollo profesional continuo y la autoevaluación de prácticas docentes a través de la retroalimentación de la comunidad.",
+                resources: [
+                    { title: "Larry Green’s Applet Page (álgebra)", url: "https://www.merlot.org/merlot/viewMaterial.htm?id=77279", search: "Advanced Search → Matemáticas / Tutorial", filters: "Disciplina, tipo, nivel, idioma, rating", popular: "Álgebra interactiva de Larry Green", example: "Taller interactivo de resolución de ecuaciones" },
+                    { title: "Interactive Math–Arithmetic/Algebra", url: "https://www.merlot.org/merlot/viewMaterial.htm?id=78197", search: "Búsqueda por título o disciplina", filters: "Disciplina, tipo de material", popular: "Puzzles matemáticos", example: "Fomentar el razonamiento lógico en el aula" },
+                    { title: "Exponent Invaders (juego)", url: "https://www.merlot.org/merlot/viewMaterial.htm?id=77279", search: "Búsqueda dentro de Applet Page", filters: "–", popular: "Exponent Invaders", example: "Gamificación de conceptos de álgebra" },
+                ]
+            },
+            {
+                id: "phet",
+                icon: "🔬",
+                name: "PhET",
+                description: "Un laboratorio de ciencias en tu navegador. PhET, un proyecto de la Universidad de Colorado Boulder, ofrece simulaciones interactivas y gratuitas basadas en la investigación para enseñar conceptos de ciencias y matemáticas, permitiendo a los estudiantes explorar y descubrir a través del juego y la experimentación.",
+                purpose: "Hacer visibles los conceptos científicos abstractos a través de la enseñanza práctica y la exploración visual.",
+                uses: "Esencial para demostraciones en clases de física, química y matemáticas; perfecto para laboratorios virtuales y tareas donde la experimentación física es imposible o peligrosa.",
+                resources: [
+                    { title: "Build an Atom", url: "https://phet.colorado.edu/en/simulations/build-an-atom", search: "Filtrar: Chemistry + “Build an Atom”", filters: "Materia, grado, idioma, html/js", popular: "Construcción de átomo", example: "Clase interactiva sobre estructura atómica" },
+                    { title: "Circuit Construction Kit", url: "https://phet.colorado.edu/en/simulations/circuit-construction-kit-dc", search: "Physics + circuits", filters: "Materia, grado, idioma", popular: "Construcción de circuitos", example: "Simulación segura de leyes de la electricidad" },
+                    { title: "Forces and Motion Basics", url: "https://phet.colorado.edu/en/simulations/forces-and-motion-basics", search: "Physics + forces", filters: "Materia, grado, idioma", popular: "Lógica de fuerzas", example: "Demostrar las leyes de Newton de forma visual" },
+                    { title: "Molecule Shapes", url: "https://phet.colorado.edu/en/simulations/molecule-shapes", search: "Chemistry + shapes", filters: "Materia, grado, idioma", popular: "Modelado molecular", example: "Clase de química sobre geometría molecular" }
+                ]
+            },
+            {
+                id: "eduteka",
+                icon: "💡",
+                name: "Eduteka",
+                description: "El centro de recursos para la innovación educativa. Este portal, liderado por la Universidad Icesi, está diseñado para capacitar a docentes de habla hispana en el uso efectivo de las Tecnologías de la Información y la Comunicación (TIC) en sus procesos de enseñanza y aprendizaje.",
+                purpose: "Capacitar y proveer herramientas a docentes para la integración efectiva de las TIC en el aula.",
+                uses: "Ideal para el diseño de clases, la creación de quizzes interactivos, el uso de rúbricas para evaluación, la elaboración de guías de trabajo y la planificación curricular enriquecida con tecnología.",
+                resources: [
+                    { title: "Quiz Orden de Operaciones", url: "https://eduteka.icesi.edu.co/mi/actividades/temas/temas.php?act=quiz_orden_operaciones", search: "Recursos → Quiz → aritmética", filters: "Tipo, nivel, temática", popular: "Quiz sobre PEMDAS", example: "Trabajo en clase sobre jerarquía de operaciones" },
+                    { title: "Rúbrica quiz gamificativo", url: "https://edtk.co/rbk/92026", search: "Herramientas → Rúbrica", filters: "Tipo, edad", popular: "Rúbrica gamificada", example: "Evaluación guiada de actividades lúdicas" },
+                    { title: "Plan interactivo de lección", url: "https://edtk.co/p/172428", search: "Herramientas → Plan", filters: "Tipo, nivel", popular: "Plan con AI", example: "Integración de quizzes y retroalimentación" }
+                ]
+            },
+            {
+                id: "procomun",
+                icon: "🌐",
+                name: "Procomún",
+                description: "La red de Recursos Educativos Abiertos del Ministerio de Educación de España. Es un vasto repositorio que agrupa materiales de aprendizaje, objetos digitales e itinerarios de aprendizaje para todos los niveles educativos, promoviendo una cultura de compartir y colaborar.",
+                purpose: "Centralizar y compartir recursos educativos abiertos creados por y para la comunidad docente española.",
+                uses: "Perfecto para la planificación curricular, la búsqueda de inspiración para actividades creativas y la adaptación de materiales existentes a las necesidades específicas del aula.",
+                resources: [
+                    { title: "¿A qué quieres jugar?", url: "https://www3.gobiernodecanarias.org/medusa/ecoescuela/recursosdigitales/author/283/", search: "Infantil > deporte", filters: "Nivel, tipo, licencia", popular: "Actividad infantil", example: "Introducción de vocabulario deportivo en preescolar" },
+                    { title: "Itinerarios de aprendizaje", url: "https://procomun.intef.es/itinerarios-de-aprendizaje", search: "Búsqueda por filtro 'itinerarios'", filters: "Nivel, etapa, tipo", popular: "Planes de unidad didáctica", example: "Diseño curricular digital y estructurado" },
+                    { title: "Procomún home", url: "https://procomun.intef.es/", search: "Búsqueda por filtro general", filters: "Nivel, tipo, licencia", popular: "Objetos digitales variados", example: "Integración de recursos en la planificación" }
+                ]
+            },
+            {
+                id: "genially",
+                icon: "✨",
+                name: "Genially",
+                description: "La herramienta para dar vida a los contenidos. Genially permite crear experiencias de comunicación interactivas y animadas de forma muy sencilla. Transforma materiales estáticos en presentaciones dinámicas, infografías, juegos y más, sin necesidad de saber programar.",
+                purpose: "Facilitar la creación de contenidos interactivos y visualmente atractivos como presentaciones, quizzes y juegos.",
+                uses: "Es la plataforma ideal para la gamificación, la creación de infografías interactivas, lecciones multimedia, y cualquier actividad que busque captar la atención del estudiante.",
+                resources: [
+                    { title: "Galería de Quizzes", url: "https://genially.com/templates/quizzes/", search: "Explorar galería", filters: "Formato, nivel, tema", popular: "Plantillas variadas", example: "Selección de un quiz por temática para una actividad" },
+                    { title: "Basic Interactive Quiz", url: "https://genially.com/template/basic-digital-quiz/", search: "Plantillas → quiz", filters: "Formato, nivel, tema", popular: "Quiz visual", example: "Actividad rápida de repaso en clase" },
+                    { title: "Genially Home", url: "https://genially.com/", search: "Explorar → plantillas", filters: "Categoría", popular: "Plataforma completa", example: "Diseño integral de una lección gamificada" }
+                ]
+            },
+            {
+                id: "scholar",
+                icon: "🎓",
+                name: "Google Scholar",
+                description: "El buscador académico por excelencia. Google Scholar permite buscar literatura científica de manera amplia, incluyendo artículos revisados por pares, tesis, libros y resúmenes de fuentes académicas, editoriales universitarias y otras organizaciones de investigación.",
+                purpose: "Proveer acceso a literatura científica y académica para fundamentar la investigación y la práctica docente.",
+                uses: "Indispensable para la investigación, la elaboración de marcos teóricos, la evaluación de herramientas TIC basadas en evidencia y la justificación pedagógica de nuevas metodologías.",
+                resources: [
+                    { title: "Búsqueda: 'interactive learning AND gamification'", url: "https://scholar.google.com/scholar?q=%22interactive+learning%22+AND+gamification", search: "Uso de comillas y operadores booleanos", filters: "Año, idioma, tipo, citas", popular: "Artículos destacados", example: "Construir el marco teórico para un proyecto de gamificación" },
+                    { title: "Búsqueda: 'Phet simulations chemistry education'", url: "https://scholar.google.com/scholar?q=Phet+simulations+chemistry+education", search: "Búsqueda por tema específico", filters: "Año, relevancia", popular: "Estudios sobre PhET", example: "Encontrar evidencia para justificar el uso de PhET en la planificación" }
+                ]
+            },
+            {
+                id: "oer",
+                icon: "🌍",
+                name: "OER Commons",
+                description: "Una biblioteca pública digital de Recursos Educativos Abiertos (REA). OER Commons es una red internacional que ofrece desde planes de lecciones completas y cursos, hasta actividades interactivas y materiales de evaluación en una amplia gama de materias y niveles.",
+                purpose: "Facilitar el descubrimiento, la creación y la colaboración en torno a recursos educativos abiertos de alta calidad.",
+                uses: "Ideal para encontrar recursos en áreas STEM y humanidades, buscar planes de lecciones completas, y adaptar materiales existentes con licencias abiertas para cualquier contexto educativo.",
+                resources: [
+                    { title: "Mini-lecciones STEM Interactivas", url: "https://www.oercommons.org/browse?f.material_types=interactive", search: "Filtrar por tipo de material: 'interactive'", filters: "Tipo, grado, materia, licencia", popular: "Recursos STEM interactivos", example: "Implementación de actividades prácticas en cursos STEM" },
+                    { title: "Lección de Lectura Interactiva", url: "https://www.oercommons.org/courses/interactive-reading-lesson", search: "Búsqueda por curso", filters: "Tipo, materia", popular: "Lección de lectura digital", example: "Fomentar la comprensión de texto en un entorno digital" },
+                    { title: "Juego Educativo Interactivo", url: "https://oercommons.org/browse?f.keyword=games", search: "Filtrar por tipo de actividad: 'game'", filters: "Grado, materia", popular: "Juegos educativos", example: "Implementar la gamificación de forma práctica en el aula" }
+                ]
+            }
+        ];
+
+        const container = document.getElementById('platforms-container');
+
+        platformData.forEach(platform => {
+            const card = document.createElement('article');
+            card.className = 'platform-card';
+
+            let resourcesHTML = '';
+            platform.resources.forEach(res => {
+                resourcesHTML += `
+                    <li>
+                        <span class="resource-title">${res.title}</span>
+                        <div class="details-grid">
+                            <div class="detail-item"><strong>Ejemplo de Uso:</strong> ${res.example}</div>
+                            <div class="detail-item"><strong>Estrategia Búsqueda:</strong> ${res.search}</div>
+                            <div class="detail-item"><strong>Filtros Comunes:</strong> ${res.filters}</div>
+                        </div>
+                        <a href="${res.url}" class="resource-link" target="_blank" rel="noopener noreferrer">Acceder al Recurso</a>
+                    </li>
+                `;
+            });
+            
+            card.innerHTML = `
+                <div class="card-header">
+                    <div class="platform-icon">${platform.icon}</div>
+                    <div class="platform-info">
+                        <h2>${platform.name}</h2>
+                        <p>${platform.description}</p>
+                    </div>
+                    <div class="toggle-icon">+</div>
+                </div>
+                <div class="card-content">
+                    <div class="content-section">
+                        <h3>Propósito y Usos Comunes</h3>
+                        <div class="details-grid">
+                            <div class="detail-item"><strong>Propósito Principal:</strong> ${platform.purpose}</div>
+                            <div class="detail-item"><strong>Usos Comunes:</strong> ${platform.uses}</div>
+                        </div>
+                    </div>
+                    <div class="content-section resource-list">
+                        <h3>Recursos Destacados</h3>
+                        <ul>
+                            ${resourcesHTML}
+                        </ul>
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+        
+        const cards = document.querySelectorAll('.platform-card');
+        cards.forEach(card => {
+            const header = card.querySelector('.card-header');
+            header.addEventListener('click', () => {
+                const isOpen = card.classList.contains('active');
+                
+                cards.forEach(c => c.classList.remove('active'));
+                
+                if (!isOpen) {
+                    card.classList.add('active');
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html>
